@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tr.com.hkerembagci.contactsoperations.entity.Contact;
 import tr.com.hkerembagci.contactsoperations.entity.ContactPhone;
 import tr.com.hkerembagci.contactsoperations.exception.ContactOperationsException;
 import tr.com.hkerembagci.contactsoperations.repository.ContactPhoneRepository;
-import tr.com.hkerembagci.contactsoperations.repository.ContactRepository;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class ContactPhoneService {
         contactPhoneRepository.deleteByContactId(contactId);
     }
 
-    protected ContactPhone save(ContactPhone contactPhone) throws ContactOperationsException {
+    protected ContactPhone save(ContactPhone contactPhone) {
         return contactPhoneRepository.save(contactPhone);
     }
 }

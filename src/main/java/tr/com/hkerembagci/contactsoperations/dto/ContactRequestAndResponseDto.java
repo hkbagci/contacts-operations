@@ -2,8 +2,6 @@ package tr.com.hkerembagci.contactsoperations.dto;
 
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor

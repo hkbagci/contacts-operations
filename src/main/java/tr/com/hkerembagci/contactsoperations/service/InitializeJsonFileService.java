@@ -6,16 +6,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tr.com.hkerembagci.contactsoperations.entity.Contact;
 
 import org.springframework.core.io.Resource;
-import tr.com.hkerembagci.contactsoperations.entity.ContactPhone;
 import tr.com.hkerembagci.contactsoperations.exception.ContactOperationsException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Data
