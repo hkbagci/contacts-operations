@@ -1,6 +1,7 @@
 package tr.com.hkerembagci.contactsoperations.entity;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -14,9 +15,8 @@ public class ContactPhone {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "contact_id")
-    private Contact contact;
+    @JoinColumn(name = "contact_id", nullable = false)
+    private Long contactId;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;

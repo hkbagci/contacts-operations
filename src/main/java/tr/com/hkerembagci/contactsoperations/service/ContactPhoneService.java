@@ -3,6 +3,7 @@ package tr.com.hkerembagci.contactsoperations.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tr.com.hkerembagci.contactsoperations.entity.Contact;
 import tr.com.hkerembagci.contactsoperations.entity.ContactPhone;
 import tr.com.hkerembagci.contactsoperations.exception.ContactOperationsException;
@@ -18,8 +19,13 @@ public class ContactPhoneService {
 
     private final ContactPhoneRepository contactPhoneRepository;
 
-    public List<ContactPhone> findByContact(Contact contact) {
-        return contactPhoneRepository.findByContact(contact);
+    public List<ContactPhone> findByContactId(Long contactId) {
+        return contactPhoneRepository.findByContactId(contactId);
+    }
+
+    @Transactional
+    public void deleteByContactId(Long contactId) {
+        contactPhoneRepository.deleteByContactId(contactId);
     }
 
     public ContactPhone save(ContactPhone contactPhone) throws ContactOperationsException {

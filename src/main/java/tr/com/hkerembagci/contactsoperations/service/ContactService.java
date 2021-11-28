@@ -20,7 +20,12 @@ public class ContactService {
         return contactRepository.findByName(contactName);
     }
 
+    public Contact findByNameAndLastName(String name, String lastName) {
+        return contactRepository.findByNameAndLastName(name, lastName);
+    }
+
     public Contact save(Contact contact) throws ContactOperationsException {
         return contactRepository.save(contact);
     }
+
 }

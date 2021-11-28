@@ -1,4 +1,3 @@
-# ALTER TABLE `contact_phone` DROP FOREIGN KEY `contact_phone_ibfk_1`;
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE `contact`
 (

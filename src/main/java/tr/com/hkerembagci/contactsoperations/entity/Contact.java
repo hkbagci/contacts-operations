@@ -2,8 +2,10 @@ package tr.com.hkerembagci.contactsoperations.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,8 +23,7 @@ public class Contact {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @OneToMany(mappedBy = "contact")
-    @JsonIgnore
-    private List<ContactPhone> phoneList;
+    @Transient
+    private List<ContactPhone> phoneList = new ArrayList<>();
 
 }

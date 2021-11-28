@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Ahmet",
+    "lastName": "Mehmet",
+    "phones": [
+      "+90 555 222 33 44",
+      "+90 555 666 77 88"
+    ]
+  },
+  {
+    "name": "Ali",
+    "lastName": "Veli",
+    "phones": "+90 555 111 55 99"
+  },
+  {
+    "name": "Muhammed",
+    "lastName": "Ali",
+    "phones": [
+      "+90 505 505 55 55",
+      "+90 542 666 99 99"
+    ]
+  },
+  {
+    "name": "Can",
+    "lastName": "Canan",
+    "phones": "+90 542 555 42 42"
+  },
+  {
+    "name": "Ahmet",
+    "lastName": "Yılmaz",
+    "phones": [
+      "+90 544 544 44 44",
+      "+90 555 555 55 55"
+    ]
+  },
+  {
+    "name": "Ali",
+    "lastName": "Yıldız",
+    "phones": [
+      "+90 555 777 88 11",
+      "+90 542 999 77 99"
+    ]
+  },
+  {
+    "name": "Murat",
+    "lastName": "Yıldız",
+    "phones": [
+      "+90 555 111 11 11",
+      "+90 555 222 22 22"
+    ]
+  },
+  {
+    "name": "Ahmet",
+    "lastName": "Mehmet",
+    "phones": "+90 505 365 65 65"
+  },
+  {
+    "name": "Can",
+    "lastName": "Kat",
+    "phones": "+90 532 532 32 32"
+  },
+  {
+    "name": "Muhammed",
+    "lastName": "Ali",
+    "phones": [
+      "+90 555 555 00 00",
+      "+90 532 599 05 05",
+      "+90 505 505 55 55"
+    ]
+  }
+]

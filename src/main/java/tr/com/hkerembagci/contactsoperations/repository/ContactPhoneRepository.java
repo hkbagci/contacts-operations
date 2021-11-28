@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ContactPhoneRepository extends JpaRepository<ContactPhone, Long> {
-    List<ContactPhone> findByContact(Contact contact);
+    List<ContactPhone> findByContactId(Long contactId);
+    void deleteByContactId(Long contactId);
 }
