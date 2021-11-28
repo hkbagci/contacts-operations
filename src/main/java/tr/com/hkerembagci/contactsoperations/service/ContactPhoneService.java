@@ -19,16 +19,16 @@ public class ContactPhoneService {
 
     private final ContactPhoneRepository contactPhoneRepository;
 
-    public List<ContactPhone> findByContactId(Long contactId) {
+    protected List<ContactPhone> findByContactId(Long contactId) {
         return contactPhoneRepository.findByContactId(contactId);
     }
 
     @Transactional
-    public void deleteByContactId(Long contactId) {
+    protected void deleteByContactId(Long contactId) {
         contactPhoneRepository.deleteByContactId(contactId);
     }
 
-    public ContactPhone save(ContactPhone contactPhone) throws ContactOperationsException {
+    protected ContactPhone save(ContactPhone contactPhone) throws ContactOperationsException {
         return contactPhoneRepository.save(contactPhone);
     }
 }

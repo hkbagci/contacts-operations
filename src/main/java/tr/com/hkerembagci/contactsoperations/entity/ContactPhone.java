@@ -1,13 +1,15 @@
 package tr.com.hkerembagci.contactsoperations.entity;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "contact_phone")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContactPhone {
 
     @Id

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE `contact`
 (
-    `id`        int          NOT NULL AUTO_INCREMENT,
+    `id`        bigint          NOT NULL AUTO_INCREMENT,
     `name`      varchar(255) NOT NULL,
     `last_name` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
@@ -10,8 +10,8 @@ CREATE TABLE `contact`
 DROP TABLE IF EXISTS `contact_phone`;
 CREATE TABLE `contact_phone`
 (
-    `id`           int          NOT NULL AUTO_INCREMENT,
-    `contact_id`   int          NOT NULL,
+    `id`           bigint          NOT NULL AUTO_INCREMENT,
+    `contact_id`   bigint          NOT NULL,
     `phone_number` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
 );

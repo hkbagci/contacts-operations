@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Muhammed",
+    "lastName": "Ali",
+    "phones": [
+      "+90 505 444 12 34",
+      "+90 542 666 99 99"
+    ]
+  },
+  {
+    "name": "Ahmet",
+    "lastName": "Yılmaz",
+    "phones": [
+      "+90 544 544 44 44"
+    ]
+  },
+  {
+    "name": "Nuri",
+    "lastName": "Sesiguzel",
+    "phones": [
+      "+90 505 666 66 66"
+    ]
+  }
+]

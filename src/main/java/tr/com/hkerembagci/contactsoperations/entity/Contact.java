@@ -1,8 +1,7 @@
 package tr.com.hkerembagci.contactsoperations.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "contact")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Contact {
 
     @Id
@@ -24,6 +26,6 @@ public class Contact {
     private String lastName;
 
     @Transient
-    private List<ContactPhone> phoneList = new ArrayList<>();
+    private List<String> phoneList = new ArrayList<>();
 
 }
