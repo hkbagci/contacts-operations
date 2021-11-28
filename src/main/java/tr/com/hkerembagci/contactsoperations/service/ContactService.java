@@ -9,10 +9,7 @@ import tr.com.hkerembagci.contactsoperations.entity.ContactPhone;
 import tr.com.hkerembagci.contactsoperations.exception.ContactOperationsException;
 import tr.com.hkerembagci.contactsoperations.repository.ContactRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,12 +51,25 @@ public class ContactService {
 
     // Modelden entity'ye çevirir.
     private Contact convertDtoToEntity(ContactRequestAndResponseDto dto) {
-        return Contact
-                .builder()
-                .name(dto.getName())
-                .lastName(dto.getLastName())
-                .phoneList(dto.getPhones())
-                .build();
+        // "phones": "+90 505 505 50 50" String tipindeyken
+        // "phones": ["+90 505 505 50 50", "+90 555 555 55 55"] List tipindedir.
+        // Hatayı önlemek adına aşağıdaki kontrol yapılmaktadır.
+        if (dto.getPhones() instanceof String) {
+            return Contact
+                    .builder()
+                    .name(dto.getName())
+                    .lastName(dto.getLastName())
+                    .phoneList(Arrays.asList(dto.getPhones().toString()))
+                    .build();
+        } else if (dto.getPhones() instanceof List) {
+            return Contact
+                    .builder()
+                    .name(dto.getName())
+                    .lastName(dto.getLastName())
+                    .phoneList((List) dto.getPhones())
+                    .build();
+        }
+        return null;
     }
 
     // Entity listesini model listesine çevirir.

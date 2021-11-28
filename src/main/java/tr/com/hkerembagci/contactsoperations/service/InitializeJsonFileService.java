@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Data
 @RequiredArgsConstructor
-public class ImportDataToDbService {
+public class InitializeJsonFileService {
 
     private final ContactService contactService;
 
@@ -41,9 +41,9 @@ public class ImportDataToDbService {
                     .lastName(tempMap.get("lastName").toString())
                     .phoneList(new ArrayList<>())
                     .build();
-            // "phones": "+90 505 505 50 50" bir String nesnesiyken
-            // "phones": ["+90 505 505 50 50", "+90 555 555 55 55"] bir List nesnesidir.
-            // Aşağıda bu kontrol yapılmaktadır.
+            // "phones": "+90 505 505 50 50" String tipindeyken
+            // "phones": ["+90 505 505 50 50", "+90 555 555 55 55"] List tipindedir.
+            // Hatayı önlemek adına aşağıdaki kontrol yapılmaktadır.
             if (tempMap.get("phones") instanceof String) {
                 contact.getPhoneList().add(tempMap.get("phones").toString());
             } else if (tempMap.get("phones") instanceof List) {

@@ -12,6 +12,6 @@ public class ContactRequestAndResponseDto {
 
     private String name;
     private String lastName;
-    private List<String> phones;
+    private Object phones;
 
 }
