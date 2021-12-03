@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.hkerembagci.contactsoperations.entity.ContactPhone;
-import tr.com.hkerembagci.contactsoperations.exception.ContactOperationsException;
 import tr.com.hkerembagci.contactsoperations.repository.ContactPhoneRepository;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class ContactPhoneService {
     }
 
     @Transactional
-    protected void deleteByContactId(Long contactId) {
+    public void deleteByContactId(Long contactId) {
         contactPhoneRepository.deleteByContactId(contactId);
     }
 

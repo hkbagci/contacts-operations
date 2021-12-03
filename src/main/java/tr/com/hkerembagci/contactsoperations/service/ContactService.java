@@ -20,7 +20,6 @@ public class ContactService {
     private final ContactRepository contactRepository;
     private final ContactPhoneService contactPhoneService;
 
-    // İsme göre model nesnesini döndürür.
     public List<ContactRequestAndResponseDto> returnDtoByName(String contactName) {
         List<Contact> contactList = contactRepository.findByName(contactName);
         contactList.forEach(contact -> {
@@ -42,44 +41,35 @@ public class ContactService {
         importDataToDb(contactList);
     }
 
-    // Model listesini entity listesine çevirir.
     public List<Contact> convertDtoListToEntityList(List<ContactRequestAndResponseDto> dtoList) {
         List<Contact> contactList = new ArrayList<>();
-        dtoList.forEach(dto -> contactList.add(convertDtoToEntity(dto)));
+        dtoList.forEach(dto -> {
+            try {
+                contactList.add(convertDtoToEntity(dto));
+            } catch (ContactOperationsException e) {
+                log.error(e.getMessage());
+            }
+        });
         return contactList;
     }
 
-    // Modelden entity'ye çevirir.
-    private Contact convertDtoToEntity(ContactRequestAndResponseDto dto) {
-        // "phones": "+90 505 505 50 50" String tipindeyken
-        // "phones": ["+90 505 505 50 50", "+90 555 555 55 55"] List tipindedir.
-        // Hatayı önlemek adına aşağıdaki kontrol yapılmaktadır.
-        if (dto.getPhones() instanceof String) {
-            return Contact
-                    .builder()
-                    .name(dto.getName())
-                    .lastName(dto.getLastName())
-                    .phoneList(Arrays.asList(dto.getPhones().toString()))
-                    .build();
-        } else if (dto.getPhones() instanceof List) {
-            return Contact
-                    .builder()
-                    .name(dto.getName())
-                    .lastName(dto.getLastName())
-                    .phoneList((List) dto.getPhones())
-                    .build();
-        }
-        return null;
+    private Contact convertDtoToEntity(ContactRequestAndResponseDto dto) throws ContactOperationsException {
+        Contact contact = Contact
+                .builder()
+                .name(dto.getName())
+                .lastName(dto.getLastName())
+                .phoneList(Collections.singletonList(dto.getPhones().toString()))
+                .build();
+        fillContactPhoneList(contact, dto.getPhones());
+        return contact;
     }
 
-    // Entity listesini model listesine çevirir.
     protected List<ContactRequestAndResponseDto> convertEntityListToDtoList(List<Contact> contactList) {
         List<ContactRequestAndResponseDto> dtoList = new ArrayList<>();
         contactList.forEach(entity -> dtoList.add(convertEntityToDto(entity)));
         return dtoList;
     }
 
-    // Entity'den modele çevirir.
     private ContactRequestAndResponseDto convertEntityToDto(Contact entity) {
         return ContactRequestAndResponseDto
                 .builder()
@@ -89,37 +79,33 @@ public class ContactService {
                 .build();
     }
 
-    // Daha önce kaydedilmiş kişiyi bulur.
     private Contact findExistingContact(Contact contact) {
         return findByNameAndLastName(contact.getName(), contact.getLastName());
     }
 
-    // Kişi nesnesine telefon numarası bilgisini doldurur.
     private void fillContactPhoneNumberList(Contact contact) {
         contact.setPhoneList(contactPhoneService.findByContactId(contact.getId()).stream()
                 .map(ContactPhone::getPhoneNumber)
                 .collect(Collectors.toList()));
     }
 
-    // Kişi listesini veri tabanına kaydeder.
     protected void importDataToDb(List<Contact> dataList) throws ContactOperationsException {
         for (Contact contact : dataList) {
             Contact existingContact = findExistingContact(contact);
             if (null != existingContact) {
-                // Bulunan eski kaydın telefon numaralarını doldurur.
                 fillContactPhoneNumberList(existingContact);
                 contactPhoneService.deleteByContactId(existingContact.getId());
             }
             Set<String> phoneSet = existingContactPhoneOperations(contact, existingContact);
             for (String phone : phoneSet) {
-                if (null != contact.getId()) {
-                    contactPhoneService.save(ContactPhone.builder()
-                            .contactId(contact.getId())
-                            .phoneNumber(phone)
-                            .build());
-                } else if (null != existingContact.getId()) {
+                if (null != existingContact && null != existingContact.getId()) {
                     contactPhoneService.save(ContactPhone.builder()
                             .contactId(existingContact.getId())
+                            .phoneNumber(phone)
+                            .build());
+                } else if (null != contact.getId()) {
+                    contactPhoneService.save(ContactPhone.builder()
+                            .contactId(contact.getId())
                             .phoneNumber(phone)
                             .build());
                 }
@@ -127,8 +113,7 @@ public class ContactService {
         }
     }
 
-    // Daha önce veri tabanında kayıtlı kişilerin eski telefon numaralarıyla yeni telefon numaralarını birleştirerek kaydeder.
-    private Set<String> existingContactPhoneOperations(Contact contact, Contact existingContact) {
+    private Set<String> existingContactPhoneOperations(Contact contact, Contact existingContact) throws ContactOperationsException {
         List<String> phoneStringList = new ArrayList<>();
         if (null == existingContact) {
             save(contact);
@@ -136,10 +121,15 @@ public class ContactService {
             phoneStringList.addAll(existingContact.getPhoneList());
         }
         phoneStringList.addAll(contact.getPhoneList());
-        if (null != existingContact) {
-            contact = existingContact;
-        }
         return new HashSet<>(phoneStringList);
+    }
+
+    protected void fillContactPhoneList(Contact contact, Object phones) throws ContactOperationsException {
+        if (phones instanceof String) {
+            contact.setPhoneList(Collections.singletonList(phones.toString()));
+        } else if (phones instanceof List) {
+            contact.setPhoneList((List<String>) phones);
+        }
     }
 
 }

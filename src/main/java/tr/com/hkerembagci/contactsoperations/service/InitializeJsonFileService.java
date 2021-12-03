@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tr.com.hkerembagci.contactsoperations.entity.Contact;
@@ -17,6 +18,7 @@ import java.util.*;
 @Service
 @Data
 @RequiredArgsConstructor
+@Log4j2
 public class InitializeJsonFileService {
 
     private final ContactService contactService;
@@ -24,13 +26,11 @@ public class InitializeJsonFileService {
     @Value("classpath:importData.json")
     private Resource resourceFile;
 
-    // Resource dizininin altındaki importData.json dosyasındaki bilgileri veri tabanına kaydeder.
     public void fillJsonDataToList() throws IOException, ContactOperationsException {
         List<Contact> dataList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        // Dosyadaki json stringini liste haline dönüştürüyoruz.
-        List tempList = Arrays.asList(objectMapper.readValue(resourceFile.getFile(), Object[].class));
+        List<Object> tempList = Arrays.asList(objectMapper.readValue(resourceFile.getFile(), Object[].class));
         tempList.forEach(temp -> {
             LinkedHashMap<String, Object> tempMap = (LinkedHashMap<String, Object>) temp;
             Contact contact = Contact.builder()
@@ -38,15 +38,10 @@ public class InitializeJsonFileService {
                     .lastName(tempMap.get("lastName").toString())
                     .phoneList(new ArrayList<>())
                     .build();
-            // "phones": "+90 505 505 50 50" String tipindeyken
-            // "phones": ["+90 505 505 50 50", "+90 555 555 55 55"] List tipindedir.
-            // Hatayı önlemek adına aşağıdaki kontrol yapılmaktadır.
-            if (tempMap.get("phones") instanceof String) {
-                contact.getPhoneList().add(tempMap.get("phones").toString());
-            } else if (tempMap.get("phones") instanceof List) {
-                for (String phoneNumber : (List<String>) tempMap.get("phones")) {
-                    contact.getPhoneList().add(phoneNumber);
-                }
+            try {
+                contactService.fillContactPhoneList(contact, tempMap.get("phones"));
+            } catch (ContactOperationsException e) {
+                log.error(e.getMessage());
             }
             dataList.add(contact);
         });

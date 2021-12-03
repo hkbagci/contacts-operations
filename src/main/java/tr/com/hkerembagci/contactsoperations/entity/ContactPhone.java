@@ -17,7 +17,7 @@ public class ContactPhone {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JoinColumn(name = "contact_id", nullable = false)
+    @Column(name = "contact_id", nullable = false)
     private Long contactId;
 
     @Column(name = "phone_number", nullable = false)
