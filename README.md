@@ -9,8 +9,20 @@ POST method can be used through localhost:8090/contacts with sending sampleImpor
 method can be used only with sending the name variable.
 
 ```bash
-curl http://localhost:8070/contacts?name=Ahmet
-curl -X http://localhost:8070/contacts
+curl http://localhost:8090/contacts?name=Ahmet
+
+curl --location --request POST 'localhost:8090/contacts' \
+--header 'Content-Type: application/json' \
+--data-raw '[
+    {
+        "name": "Muhammed",
+        "lastName": "Ali",
+        "phones": [
+            "+90 505 444 12 34",
+            "+90 542 666 99 99"
+        ]
+    }
+]'
 ```
 
 ## Usage
